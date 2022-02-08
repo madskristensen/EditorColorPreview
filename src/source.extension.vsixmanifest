@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="EditorColorPreview.06059b78-ceae-4188-905d-be8877234e35" Version="1.0" Language="en-US" Publisher="Mads Kristensen" />
+        <Identity Id="EditorColorPreview.06059b78-ceae-4188-905d-be8877234e35" Version="1.0.1" Language="en-US" Publisher="Mads Kristensen" />
         <DisplayName>Color Preview</DisplayName>
         <Description xml:space="preserve">Shows a color preview in front of all named colors, hex, rgb and hsl values in CSS files.</Description>
         <License>Resources\LICENSE</License>

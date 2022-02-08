@@ -11,7 +11,7 @@ namespace EditorColorPreview
         public const string Name = "Color Preview";
         public const string Description = @"Shows a color preview in front of all named colors, hex, rgb and hsl values in CSS files.";
         public const string Language = "en-US";
-        public const string Version = "1.0";
+        public const string Version = "1.0.1";
         public const string Author = "Mads Kristensen";
         public const string Tags = "color, css, hsl, rgb, hex";
     }
