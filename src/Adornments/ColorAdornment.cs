@@ -1,10 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text.Editor;
 
@@ -13,10 +11,12 @@ namespace EditorColorPreview
     internal sealed class ColorAdornment : Border
     {
         private static readonly SolidColorBrush _borderColor = (SolidColorBrush)Application.Current.Resources[VsBrushes.CaptionTextKey];
+        private readonly ITextView _view;
 
-        internal ColorAdornment(Color color)
+        internal ColorAdornment(Color color, ITextView view)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+            _view = view;
 
             Padding = new Thickness(0);
             BorderThickness = new Thickness(1);
@@ -31,7 +31,8 @@ namespace EditorColorPreview
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
-            VS.Commands.ExecuteAsync("Edit.CompleteWord").FireAndForget();
+            _view.Caret.MoveToNextCaretPosition();
+            VS.Commands.ExecuteAsync("Edit.ListMembers").FireAndForget();
             e.Handled = true;
         }
 

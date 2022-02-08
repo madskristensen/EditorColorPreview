@@ -7,37 +7,39 @@ public static class ColorUtils
 {
     public static Color HtmlToColor(string htmlColor)
     {
-        if (htmlColor.Equals("rebeccapurple", StringComparison.OrdinalIgnoreCase))
-        {
-            htmlColor = "#663399";
-        }
-
         try
         {
+            // RGB
             if (htmlColor.StartsWith("rgb", StringComparison.OrdinalIgnoreCase))
             {
                 return ArgbToColor(htmlColor);
             }
-            else if (htmlColor.StartsWith("hsl", StringComparison.OrdinalIgnoreCase))
+
+            // HSL
+            if (htmlColor.StartsWith("hsl", StringComparison.OrdinalIgnoreCase))
             {
                 return HslToColor(htmlColor);
             }
-            else if (htmlColor.StartsWith("#", StringComparison.Ordinal))
+
+            // HEX
+            if (htmlColor.StartsWith("#", StringComparison.Ordinal))
             {
                 return HexToColor(htmlColor);
             }
-            else
+
+            // Named colors
+            if (htmlColor.Equals("rebeccapurple", StringComparison.OrdinalIgnoreCase))
             {
-                // Fallback to ColorTranslator for named colors, e.g. "Black", "White" etc.
-                return ColorTranslator.FromHtml(htmlColor);
+                htmlColor = "#663399";
             }
+
+            return ColorTranslator.FromHtml(htmlColor);
+
         }
         catch
         {
-            // ColorTranslator throws System.Exception, don't really care what the actual error is.
+            return Color.Empty;
         }
-
-        return Color.Empty;
     }
 
     private static Color HexToColor(string htmlColor)

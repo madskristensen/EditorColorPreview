@@ -1,94 +1,98 @@
-//***************************************************************************
-//
-//    Copyright (c) Microsoft Corporation. All rights reserved.
-//    This code is licensed under the Visual Studio SDK license terms.
-//    THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-//    ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-//    IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-//    PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//***************************************************************************
-
-// This controls whether the adornments are positioned next to the hex values or instead of them.
-#define HIDING_TEXT
-
+﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Tagging;
-using System;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.Utilities;
 
 namespace EditorColorPreview
 {
-    /// <summary>
-    /// Provides color swatch adornments in place of color constants.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// This is a sample usage of the <see cref="IntraTextAdornmentTagTransformer"/> utility class.
-    /// </para>
-    /// </remarks>
-    internal sealed class ColorAdornmentTagger : IntraTextAdornmentTagger<ColorTag, ColorAdornment>
+    [Export(typeof(IViewTaggerProvider))]
+    [ContentType("css")]
+    [TagType(typeof(IntraTextAdornmentTag))]
+    internal sealed class ColorAdornmentTaggerProvider : IViewTaggerProvider
     {
-        private readonly ITagAggregator<ColorTag> _colorTagger;
+        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag =>
+            buffer.Properties.GetOrCreateSingletonProperty(() => new ColorAdornmentTagger(buffer, textView)) as ITagger<T>;
+    }
 
-        internal static ITagger<IntraTextAdornmentTag> GetTagger(ITextView view, ITextBuffer buffer, Lazy<ITagAggregator<ColorTag>> colorTagger)
+    internal class ColorAdornmentTagger : ITagger<IntraTextAdornmentTag>, IDisposable
+    {
+        public static readonly Regex _regex = new(@"#(?:[0-9a-fA-F]{2}){2,4}\b|(#[0-9a-fA-F]{3})\b|(rgb|hsl)a?\((-?\d+%?[,\s]+){2,3}\s*[\d\.]+%?\)|(black|silver|gray|whitesmoke|maroon|red|purple|fuchsia|green|lime|olivedrab|yellow|navy|blue|teal|aquamarine|orange|aliceblue|antiquewhite|aqua|azure|beige|bisque|blanchedalmond|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|gainsboro|ghostwhite|goldenrod|gold|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavenderblush|lavender|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|limegreen|linen|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|oldlace|olive|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|thistle|tomato|transparent|turquoise|violet|wheat|white|yellowgreen|rebeccapurple)", RegexOptions.Compiled);
+        private readonly ITextView _view;
+        private readonly ITextBuffer _buffer;
+        private bool _isDisposed;
+        private bool _isProcessing;
+
+        public ColorAdornmentTagger(ITextBuffer buffer, ITextView view)
         {
-            return buffer.Properties.GetOrCreateSingletonProperty(
-                () => new ColorAdornmentTagger(view, buffer, colorTagger.Value));
+            _view = view;
+            _buffer = buffer;
+            _buffer.Changed += OnBufferChange;
         }
 
-        private ColorAdornmentTagger(ITextView view, ITextBuffer buffer, ITagAggregator<ColorTag> colorTagger)
-            : base(view, buffer)
+        private void OnBufferChange(object sender, TextContentChangedEventArgs e)
         {
-            _colorTagger = colorTagger;
+            if (_isProcessing)
+                return;
+
+            try
+            {
+                _isProcessing = true;
+                int start = e.Changes.First().NewSpan.Start;
+                int end = e.Changes.Last().NewSpan.End;
+
+                ITextSnapshotLine startLine = e.After.GetLineFromPosition(start);
+                ITextSnapshotLine endLine = e.After.GetLineFromPosition(end);
+
+                SnapshotSpan span = new(e.After, Span.FromBounds(startLine.Start, endLine.End));
+                TagsChanged?.Invoke(this, new SnapshotSpanEventArgs(span));
+            }
+            finally
+            {
+                _isProcessing = false;
+            }
+        }
+
+        public IEnumerable<ITagSpan<IntraTextAdornmentTag>> GetTags(NormalizedSnapshotSpanCollection spans)
+        {
+            if (_isProcessing)
+                yield break;
+
+            foreach (SnapshotSpan span in spans.Where(s => !s.IsEmpty && s.Length >= 3))
+            {
+                SnapshotSpan currentSpan = span;
+                string text = currentSpan.GetText();
+
+                foreach (Match match in _regex.Matches(text))
+                {
+                    Color color = ColorUtils.HtmlToColor(match.Value);
+
+                    if (color != Color.Empty)
+                    {
+                        System.Windows.Media.Color winColor = System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+                        IntraTextAdornmentTag tag = new(new ColorAdornment(winColor, _view), null, PositionAffinity.Successor);
+                        SnapshotSpan colorSpan = new(currentSpan.Snapshot, currentSpan.Start + match.Index, 0);
+
+                        yield return new TagSpan<IntraTextAdornmentTag>(colorSpan, tag);
+                    }
+                }
+            }
         }
 
         public void Dispose()
         {
-            _colorTagger.Dispose();
-            buffer.Properties.RemoveProperty(typeof(ColorAdornmentTagger));
-        }
-
-        // To produce adornments that don't obscure the text, the adornment tags
-        // should have zero length spans. Overriding this method allows control
-        // over the tag spans.
-        protected override IEnumerable<Tuple<SnapshotSpan, PositionAffinity?, ColorTag>> GetAdornmentData(NormalizedSnapshotSpanCollection spans)
-        {
-            if (spans.Count == 0)
-                yield break;
-
-            ITextSnapshot snapshot = spans[0].Snapshot;
-            IEnumerable<IMappingTagSpan<ColorTag>> colorTags = _colorTagger.GetTags(spans);
-
-            foreach (IMappingTagSpan<ColorTag> dataTagSpan in colorTags)
+            if (!_isDisposed)
             {
-                NormalizedSnapshotSpanCollection colorTagSpans = dataTagSpan.Span.GetSpans(snapshot);
-
-                // Ignore data tags that are split by projection.
-                // This is theoretically possible but unlikely in current scenarios.
-                if (colorTagSpans.Count != 1)
-                    continue;
-
-                var adornmentSpan = new SnapshotSpan(colorTagSpans[0].Start, 0);
-
-                yield return Tuple.Create(adornmentSpan, (PositionAffinity?)PositionAffinity.Successor, dataTagSpan.Tag);
-            }
-        }
-
-        protected override ColorAdornment CreateAdornment(ColorTag dataTag, SnapshotSpan span)
-        {
-            return new ColorAdornment(dataTag);
-        }
-
-        protected override bool UpdateAdornment(ColorAdornment adornment, ColorTag dataTag)
-        {
-            if (adornment != null)
-            {
-                adornment.Update(dataTag);
+                _buffer.Changed -= OnBufferChange;
             }
 
-            return true;
+            _isDisposed = true;
         }
+
+        public event EventHandler<SnapshotSpanEventArgs> TagsChanged;
     }
 }

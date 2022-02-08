@@ -46,7 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Adornments\ColorAdornment.cs" />
-    <Compile Include="Adornments\ColorAdornmentTagger2.cs" />
+    <Compile Include="Adornments\ColorAdornmentTagger.cs" />
     <Compile Include="Adornments\ColorTag.cs" />
     <Compile Include="Adornments\ColorUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
