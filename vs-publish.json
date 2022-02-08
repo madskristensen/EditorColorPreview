@@ -7,8 +7,8 @@
   },
   "assetFiles": [
     {
-      "pathOnDisk": "art/font-options.png",
-      "targetPath": "art/font-options.png"
+      "pathOnDisk": "art/screenshot.png",
+      "targetPath": "art/screenshot.png"
     }
   ],
   "overview": "README.md",
