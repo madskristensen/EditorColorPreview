@@ -12,6 +12,7 @@ namespace EditorColorPreview
 {
     [Export(typeof(IViewTaggerProvider))]
     [ContentType("css")]
+    [ContentType("typescript")]
     [TagType(typeof(IntraTextAdornmentTag))]
     internal sealed class ColorAdornmentTaggerProvider : IViewTaggerProvider
     {

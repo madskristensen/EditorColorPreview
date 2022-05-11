@@ -11,7 +11,7 @@ or get the [CI build][vsixgallery].
 
 --------------------------------------
 
-Shows a color preview in front of all named colors, hex, rgb and hsl values in CSS files.
+Shows a color preview in front of all named colors, hex, rgb and hsl values in CSS and JavaScript files.
 
 ![color preview](art/screenshot.png)<br />
 ***Figure 1**: Color preview in light theme and dark theme*
