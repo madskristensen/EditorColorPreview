@@ -36,22 +36,6 @@ namespace EditorColorPreview.Test
         [DataRow("rgb(100%, 0%, 0%)", "rgb(255, 0, 0)")]
         [DataRow("rgba(2, 3, 4, 0.5)", "rgba(2, 3, 4, 0.5)")]
         [DataRow("rgba(2, 3, 4, 50%)", "rgba(2, 3, 4, 0.5)")]
-        [DataRow("rgb(none none none)", "rgb(0, 0, 0)")]
-        [DataRow("rgb(none none none / none)", "rgba(0, 0, 0, 0)")]
-        [DataRow("rgb(128 none none)", "rgb(128, 0, 0)")]
-        [DataRow("rgb(128 none none / none)", "rgba(128, 0, 0, 0)")]
-        [DataRow("rgb(none none none / .5)", "rgba(0, 0, 0, 0.5)")]
-        [DataRow("rgb(20% none none)", "rgb(51, 0, 0)")]
-        [DataRow("rgb(20% none none / none)", "rgba(51, 0, 0, 0)")]
-        [DataRow("rgb(none none none / 50%)", "rgba(0, 0, 0, 0.5)")]
-        [DataRow("rgba(none none none)", "rgb(0, 0, 0)")]
-        [DataRow("rgba(none none none / none)", "rgba(0, 0, 0, 0)")]
-        [DataRow("rgba(128 none none)", "rgb(128, 0, 0)")]
-        [DataRow("rgba(128 none none / none)", "rgba(128, 0, 0, 0)")]
-        [DataRow("rgba(none none none / .5)", "rgba(0, 0, 0, 0.5)")]
-        [DataRow("rgba(20% none none)", "rgb(51, 0, 0)")]
-        [DataRow("rgba(20% none none / none)", "rgba(51, 0, 0, 0)")]
-        [DataRow("rgba(none none none / 50%)", "rgba(0, 0, 0, 0.5)")]
         public void RGA_Test(string testHtml, string expectedHtml)
         {
             Color actual = ColorUtils.HtmlToColor(testHtml);

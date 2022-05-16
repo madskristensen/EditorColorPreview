@@ -45,14 +45,6 @@ namespace EditorColorPreview.Test
         }
 
         [DataTestMethod]
-        [DataRow("rgb(-2, 3, 4)", "rgb(0, 3, 4)")]
-        [DataRow("rgb(100, 200, 300)", "rgb(100, 200, 255)")]
-        [DataRow("rgb(20, 10, 0, -10)", "rgba(20, 10, 0, 0)")]
-        [DataRow("rgb(100%, 200%, 300%)", "rgb(255, 255, 255)")]
-        [DataRow("rgb(2, 3, 4)", "rgb(2, 3, 4)")]
-        [DataRow("rgb(100%, 0%, 0%)", "rgb(255, 0, 0)")]
-        [DataRow("rgba(2, 3, 4, 0.5)", "rgba(2, 3, 4, 0.5)")]
-        [DataRow("rgba(2, 3, 4, 50%)", "rgba(2, 3, 4, 0.5)")]
         [DataRow("rgb(none none none)", "rgb(0, 0, 0)")]
         [DataRow("rgb(none none none / none)", "rgba(0, 0, 0, 0)")]
         [DataRow("rgb(128 none none)", "rgb(128, 0, 0)")]
