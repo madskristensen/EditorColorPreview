@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		vs-publish.json = vs-publish.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditorColorPreview.Test", "test\EditorColorPreview.Test\EditorColorPreview.Test.csproj", "{198E2552-B2B2-437E-8A9B-16CA9DFDC372}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,14 @@ Global
 		{D06E0E89-FA50-4CA2-8799-692039708231}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D06E0E89-FA50-4CA2-8799-692039708231}.Release|x86.ActiveCfg = Release|x86
 		{D06E0E89-FA50-4CA2-8799-692039708231}.Release|x86.Build.0 = Release|x86
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Debug|x86.Build.0 = Debug|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Release|x86.ActiveCfg = Release|Any CPU
+		{198E2552-B2B2-437E-8A9B-16CA9DFDC372}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
