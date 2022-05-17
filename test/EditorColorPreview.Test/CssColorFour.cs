@@ -6,7 +6,66 @@ namespace EditorColorPreview.Test
     [TestClass]
     public class CssColorFour
     {
+
         [DataTestMethod]
+        [DataRow("rgb(0% 50% 0%)", "#008000")]
+        [DataRow("rgb(0 128.0 0)", "#008000")]
+        [DataRow("rgb(0% 50% 0% / 1.0)", "#008000")]
+        [DataRow("rgb(0 128.0 0 / 1)", "#008000")]
+        [DataRow("rgb(0% 50% 0% / 100%)", "#008000")]
+        [DataRow("rgb(0 128.0 0 / 100%)", "#008000")]
+        [DataRow("rgb(0%, 50%, 0%, 100%)", "#008000")]
+        [DataRow("rgb(0, 128.0, 0, 100%)", "#008000")]
+        [DataRow("rgb(none none none)", "rgb(0, 0, 0)")]
+        [DataRow("rgba(0% 50% 0%)", "#008000")]
+        [DataRow("rgba(0 128.0 0)", "#008000")]
+        [DataRow("rgba(0% 50% 0% / 1.0)", "#008000")]
+        [DataRow("rgba(0 128.0 0 / 1)", "#008000")]
+        [DataRow("rgba(0% 50% 0% / 100%)", "#008000")]
+        [DataRow("rgba(0 128.0 0 / 100%)", "#008000")]
+        [DataRow("rgba(0%, 50%, 0%, 100%)", "#008000")]
+        [DataRow("rgba(0, 128.0, 0, 100%)", "#008000")]
+        [DataRow("rgb(none none none / none)", "rgba(0, 0, 0, 0)")]
+        [DataRow("rgb(128 none none)", "rgb(128, 0, 0)")]
+        [DataRow("rgb(128 none none / none)", "rgba(128, 0, 0, 0)")]
+        [DataRow("rgb(none none none / .5)", "rgba(0, 0, 0, 0.5)")]
+        [DataRow("rgb(20% none none)", "rgb(51, 0, 0)")]
+        [DataRow("rgb(20% none none / none)", "rgba(51, 0, 0, 0)")]
+        [DataRow("rgb(none none none / 50%)", "rgba(0, 0, 0, 0.5)")]
+        [DataRow("rgba(none none none)", "rgb(0, 0, 0)")]
+        [DataRow("rgba(none none none / none)", "rgba(0, 0, 0, 0)")]
+        [DataRow("rgba(128 none none)", "rgb(128, 0, 0)")]
+        [DataRow("rgba(128 none none / none)", "rgba(128, 0, 0, 0)")]
+        [DataRow("rgba(none none none / .5)", "rgba(0, 0, 0, 0.5)")]
+        [DataRow("rgba(20% none none)", "rgb(51, 0, 0)")]
+        [DataRow("rgba(20% none none / none)", "rgba(51, 0, 0, 0)")]
+        [DataRow("rgba(none none none / 50%)", "rgba(0, 0, 0, 0.5)")]
+        public void RGA_Test(string testHtml, string expectedHtml)
+        {
+            Color actual = ColorUtils.HtmlToColor(testHtml);
+
+            Color expected = ColorUtils.HtmlToColor(expectedHtml);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [DataTestMethod]
+        [DataRow("hsl(120 100% 25%)", "#008000")]
+        [DataRow("hsl(120deg 100% 25%)", "#008000")]
+        [DataRow("hsl(120 100% 25% / 1.0)", "#008000")]
+        [DataRow("hsl(120deg 100% 25% / 1)", "#008000")]
+        [DataRow("hsl(120 100% 25% / 100%)", "#008000")]
+        [DataRow("hsl(120deg 100% 25% / 100%)", "#008000")]
+        [DataRow("hsl(120, 100%, 25%, 100%)", "#008000")]
+        [DataRow("hsl(120deg, 100%, 25%, 100%)", "#008000")]
+        [DataRow("hsla(120 100% 25%)", "#008000")]
+        [DataRow("hsla(120deg 100% 25%)", "#008000")]
+        [DataRow("hsla(120 100% 25% / 1.0)", "#008000")]
+        [DataRow("hsla(120deg 100% 25% / 1)", "#008000")]
+        [DataRow("hsla(120 100% 25% / 100%)", "#008000")]
+        [DataRow("hsla(120deg 100% 25% / 100%)", "#008000")]
+        [DataRow("hsla(120, 100%, 25%, 100%)", "#008000")]
+        [DataRow("hsl(120deg, 100%, 25%, 100%)", "#008000")]
         [DataRow("hsl(120 30% 50%)", "rgb(89, 166, 89)")]
         [DataRow("hsl(120 30% 50% / 0.5)", "rgba(89, 166, 89, 0.5)")]
         [DataRow("hsl(none none none)", "rgb(0, 0, 0)")]
@@ -44,33 +103,13 @@ namespace EditorColorPreview.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
-        [DataRow("rgb(none none none)", "rgb(0, 0, 0)")]
-        [DataRow("rgb(none none none / none)", "rgba(0, 0, 0, 0)")]
-        [DataRow("rgb(128 none none)", "rgb(128, 0, 0)")]
-        [DataRow("rgb(128 none none / none)", "rgba(128, 0, 0, 0)")]
-        [DataRow("rgb(none none none / .5)", "rgba(0, 0, 0, 0.5)")]
-        [DataRow("rgb(20% none none)", "rgb(51, 0, 0)")]
-        [DataRow("rgb(20% none none / none)", "rgba(51, 0, 0, 0)")]
-        [DataRow("rgb(none none none / 50%)", "rgba(0, 0, 0, 0.5)")]
-        [DataRow("rgba(none none none)", "rgb(0, 0, 0)")]
-        [DataRow("rgba(none none none / none)", "rgba(0, 0, 0, 0)")]
-        [DataRow("rgba(128 none none)", "rgb(128, 0, 0)")]
-        [DataRow("rgba(128 none none / none)", "rgba(128, 0, 0, 0)")]
-        [DataRow("rgba(none none none / .5)", "rgba(0, 0, 0, 0.5)")]
-        [DataRow("rgba(20% none none)", "rgb(51, 0, 0)")]
-        [DataRow("rgba(20% none none / none)", "rgba(51, 0, 0, 0)")]
-        [DataRow("rgba(none none none / 50%)", "rgba(0, 0, 0, 0.5)")]
-        public void RGA_Test(string testHtml, string expectedHtml)
-        {
-            Color actual = ColorUtils.HtmlToColor(testHtml);
-
-            Color expected = ColorUtils.HtmlToColor(expectedHtml);
-
-            Assert.AreEqual(expected, actual);
-        }
 
         [DataTestMethod]
+        [DataRow("hwb(120 0% 49.8039%)", "#008000")]
+        [DataRow("hwb(0 0% 100%)", "#000000")]
+        [DataRow("hwb(0 100% 100%)", "rgb(50% 50% 50%)")]
+        [DataRow("hwb(120 20% 30%)", "rgb(20% 70% 20%)")]
+        [DataRow("hwb(120 70% 60%)", "rgb(53.8462% 53.8462% 53.8462%)")]
         [DataRow("hwb(120 30% 50%)", "rgb(77, 128, 77)")]
         [DataRow("hwb(120 30% 50% / 0.5)", "rgba(77, 128, 77, 0.5)")]
         [DataRow("hwb(none none none)", "rgb(255, 0, 0)")]
@@ -190,12 +229,39 @@ namespace EditorColorPreview.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void Lab_Color_test()
+        [DataTestMethod]
+        [DataRow("lab(46.2775% -47.5621 48.5837)", "#008000")]
+        // TODO: Not Passing
+        //[DataRow("lab(0% 0 0)", "#000000")]
+        [DataRow("lab(100% 0 0)", "#FFFFFF")]
+        [DataRow("lab(50% 50 0)", "rgb(75.6208% 30.4487% 47.5634%)")]
+        [DataRow("lab(70% -45 0)", "rgb(10.751% 75.558% 66.398%)")]
+        [DataRow("lab(70% 0 70)", "rgb(76.6254% 66.3607% 5.5775%)")]
+        [DataRow("lab(55% 0 -60)", "rgb(12.8128% 53.105% 92.7645%)")]
+        [DataRow("lab(86.6146% -106.5599 102.8717)", "color(display-p3 0 1 0)")]
+        public void Lab_Color_test(string inputHtml, string expectedHtml)
         {
-            Color expected = ColorUtils.HtmlToColor("rgb(46.27%, 32.94%, 80.39%)");
+            Color actual = ColorUtils.HtmlToColor(inputHtml);
 
-            Color actual = ColorUtils.HtmlToColor("lab(44.36% 36.05 -58.99)");
+            Color expected = ColorUtils.HtmlToColor(expectedHtml);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [DataTestMethod]
+        [DataRow("lch(46.2775% 67.9892 134.3912)", "#008000")]
+        [DataRow("lch(0% 0 0)", "#000000")]
+        [DataRow("lch(100% 0 0)", "#FFFFFF")]
+        [DataRow("lch(50% 50 0)", "rgb(75.6208% 30.4487% 47.5634%)")]
+        [DataRow("lch(70% 45 -180)", "rgb(10.7906% 75.5567% 66.3982%)")]
+        [DataRow("lch(70% 70 90)", "rgb(76.6254% 66.3607% 5.5775%)")]
+        [DataRow("lch(55% 60 270)", "rgb(12.8128% 53.105% 92.7645%")]
+
+        public void Lch_Color_test(string inputHtml, string expectedHtml)
+        {
+            Color actual = ColorUtils.HtmlToColor(inputHtml);
+
+            Color expected = ColorUtils.HtmlToColor(expectedHtml);
 
             Assert.AreEqual(expected, actual);
         }
@@ -237,4 +303,6 @@ namespace EditorColorPreview.Test
         }
     }
 }
+
+
 
