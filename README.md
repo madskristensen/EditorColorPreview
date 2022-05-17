@@ -57,7 +57,7 @@ These color formats are supported:
   - `lab(100% 0 0)`
   - `lab(70% -45 0)`
   - `lab(86.6146% -106.5599 102.8717)`
-- LCH (Colors are converted to sRGB. Some colors might might not convert properly) [^1]
+- LCH (Colors are converted to sRGB. Some colors might not convert properly) [^1]
   - `lch(46.2775% 67.9892 134.3912)`
   - `lch(0% 0 0)`
   - `lch(50% 50 0)`
