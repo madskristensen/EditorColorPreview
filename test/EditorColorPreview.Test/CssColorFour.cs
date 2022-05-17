@@ -248,7 +248,7 @@ namespace EditorColorPreview.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod]
+        [DataTestMethod, Ignore]
         [DataRow("lch(46.2775% 67.9892 134.3912)", "#008000")]
         [DataRow("lch(0% 0 0)", "#000000")]
         [DataRow("lch(100% 0 0)", "#FFFFFF")]
