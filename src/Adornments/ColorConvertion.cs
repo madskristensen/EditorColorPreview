@@ -11,6 +11,10 @@ namespace EditorColorPreview
 
         public static double[] LabToRgb(double l, double a, double b)
         {
+            if (l == 0.0)
+            {
+                return new double[] { 0.0, 0.0, 0.0 };
+            }
             double[] result = LabToXYZ(new double[] { l, a, b });
             result = D50ToD65(result);
             result = XyzToLinearRGB(result);
@@ -20,14 +24,11 @@ namespace EditorColorPreview
         public static double[] LchToRgb(double l, double c, double h)
         {
             double[] results = LchToLab(new double[] { l, c, h });
-            results = LabToXYZ(results);
-            results = D50ToD65(results);
-            return XyzToLinearRGB(results);
-
+            return LabToRgb(results[0], results[1], results[2]);
         }
 
         private static double[] LchToLab(double[] lch) =>
-            new double[] { lch[0], lch[1] * Math.Cos(lch[2]), lch[1] * Math.Sin(lch[2]) };
+            new double[] { lch[0], lch[1] * Math.Cos(lch[2] * Math.PI / 108), lch[1] * Math.Sin(lch[2] * Math.PI / 180) };
 
         private static double[] LabToXYZ(double[] lab)
         {

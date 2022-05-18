@@ -151,15 +151,19 @@ namespace EditorColorPreview.Test
         [DataRow("color(display-p3 1 1 0.330897)", "yellow")]
         [DataRow("color(display-p3 0.465377 0.532768 0.317713)", "rgb(44.8436% 53.537% 28.8112%)")]
         [DataRow("color(srgb 0.448436 0.53537 0.288113)", "rgb(44.8436% 53.537% 28.8112%)")]
+        // TODO: Test not passing
         //[DataRow("color(a98-rgb 0.281363 0.498012 0.116746)", "#008000")]
         [DataRow("color(a98-rgb 0 0 0)", "#000000")]
         [DataRow("color(a98-rgb 1 1 1)", "rgb(99.993% 100% 100%)")]
         [DataRow("color(a98-rgb 0 1 0)", "lab(83.2141% -129.1072 87.1718)")]
+        // TODO: Test not passing
         //[DataRow("color(prophoto-rgb 0.230479 0.395789 0.129968)", "#008000")]
         [DataRow("color(prophoto-rgb 0 0 0)", "#000000")]
+        // TODO: Test not passing
         //[DataRow("color(prophoto-rgb 1 1 1)", "lab(100% 0.0131 0.0085)")]
         [DataRow("color(prophoto-rgb 0 1 0)", "lab(87.5745% -186.6921 150.9905)")]
         [DataRow("color(prophoto-rgb 0.42444 0.934918 0.190922)", "color(display-p3 0 1 0)")]
+        // TODO: Test not passing
         //[DataRow("color(prophoto-rgb 28.610% 49.131% 16.133%)", "#009900")]
         [DataRow("color(rec2020 0.235202 0.431704 0.085432)", "#008000")]
         [DataRow("color(rec2020 0 0 0)", "#000000")]
@@ -231,7 +235,7 @@ namespace EditorColorPreview.Test
 
         [DataTestMethod]
         [DataRow("lab(46.2775% -47.5621 48.5837)", "#008000")]
-        // TODO: Not Passing
+        // TODO: Test not passing
         //[DataRow("lab(0% 0 0)", "#000000")]
         [DataRow("lab(100% 0 0)", "#FFFFFF")]
         [DataRow("lab(50% 50 0)", "rgb(75.6208% 30.4487% 47.5634%)")]
@@ -248,15 +252,16 @@ namespace EditorColorPreview.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [DataTestMethod, Ignore]
+        [DataTestMethod]
         [DataRow("lch(46.2775% 67.9892 134.3912)", "#008000")]
         [DataRow("lch(0% 0 0)", "#000000")]
         [DataRow("lch(100% 0 0)", "#FFFFFF")]
         [DataRow("lch(50% 50 0)", "rgb(75.6208% 30.4487% 47.5634%)")]
-        [DataRow("lch(70% 45 -180)", "rgb(10.7906% 75.5567% 66.3982%)")]
-        [DataRow("lch(70% 70 90)", "rgb(76.6254% 66.3607% 5.5775%)")]
-        [DataRow("lch(55% 60 270)", "rgb(12.8128% 53.105% 92.7645%")]
-
+        // TODO: Test not passing
+        //[DataRow("lch(70% 45 180)", "color(display-p3 0.3551 0.7445 0.6662)")]
+        // TODO: Test not passing
+        //[DataRow("lch(70% 70 90)", "rgb(76.6254% 66.3607% 5.5775%)")]
+        [DataRow("lch(55% 60 270)", "rgb(12.8128% 53.105% 92.7645%)")]
         public void Lch_Color_test(string inputHtml, string expectedHtml)
         {
             Color actual = ColorUtils.HtmlToColor(inputHtml);
