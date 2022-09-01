@@ -36,7 +36,7 @@ namespace EditorColorPreview
 
         private void OnBufferChange(object sender, TextContentChangedEventArgs e)
         {
-            if (_isProcessing)
+            if (_isProcessing || e.Changes.Count == 0)
                 return;
 
             try
