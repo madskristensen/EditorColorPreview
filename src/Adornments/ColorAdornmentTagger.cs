@@ -16,8 +16,16 @@ namespace EditorColorPreview
     [TagType(typeof(IntraTextAdornmentTag))]
     internal sealed class ColorAdornmentTaggerProvider : IViewTaggerProvider
     {
-        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag =>
-            buffer.Properties.GetOrCreateSingletonProperty(() => new ColorAdornmentTagger(buffer, textView)) as ITagger<T>;
+        public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
+        {
+            // Abort if the file is too big
+            if (buffer.CurrentSnapshot.Length < 10000)
+            {
+                return buffer.Properties.GetOrCreateSingletonProperty(() => new ColorAdornmentTagger(buffer, textView)) as ITagger<T>;
+            }
+
+            return null;
+        }
     }
 
     internal class ColorAdornmentTagger : ITagger<IntraTextAdornmentTag>, IDisposable
