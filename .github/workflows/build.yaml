@@ -42,7 +42,7 @@ jobs:
       run: msbuild /v:m -restore /p:OutDir=\_built
 
     - name: Setup test
-      uses: darenm/Setup-VSTest@v1
+      uses: darenm/Setup-VSTest@v1.2
 
     - name: Test
       run: vstest.console.exe \_built\*Test.dll
