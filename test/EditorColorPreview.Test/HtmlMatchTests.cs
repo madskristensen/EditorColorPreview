@@ -9,6 +9,8 @@ namespace EditorColorPreview.Test
     {
         [DataTestMethod]
         [DataRow("color: rgb(0, 0, 0)")]
+        [DataRow("color: rgba(0,0,4,0.82);")]
+        [DataRow("color: rgba(0 0 4 0.82);")]
         [DataRow("color: hsl(120 30% 50%)")]
         [DataRow("color: hsl(120 30% 50% / 0.5)")]
         [DataRow("color: hsl(none none none)")]
