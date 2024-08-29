@@ -19,7 +19,7 @@ namespace EditorColorPreview
         public ITagger<T> CreateTagger<T>(ITextView textView, ITextBuffer buffer) where T : ITag
         {
             // Abort if the file is too big
-            if (buffer.CurrentSnapshot.Length < 10000)
+            if (buffer.CurrentSnapshot.Length < 150000)
             {
                 return buffer.Properties.GetOrCreateSingletonProperty(() => new ColorAdornmentTagger(buffer, textView)) as ITagger<T>;
             }
